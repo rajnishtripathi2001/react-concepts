@@ -34,12 +34,48 @@ export const Validation=()=>{
 
   const handleSubmit=(event)=>{
     event.preventDefault()
-    const newData = {name,phoneNumber,email,institute,events}
-    //console.log(newData)
-    setData(prevState => {
-        console.log(prevState,"===> Prev State")
-        return [...prevState,newData]  
-    })
+
+    let error = false
+
+    let namePattern = /^[a-zA-Z]+$/gm;
+    let nameRegex = new RegExp(namePattern);
+    if(nameRegex.test(name)){
+        setIsNameError(false)
+        error = false
+    }else{
+        setIsNameError(true)
+        error=true
+    }
+
+    let phonePattern = /^[\d]+$/gm;
+    let phoneRegex = new RegExp(phonePattern);
+    if(phoneRegex.test(phoneNumber)){
+        setIsPhoneNumberError(false);
+        error = false
+    }else{
+        setIsPhoneNumberError(true);
+        error=true
+    }
+
+    let emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z]+\.+[a-zA-Z]{2,4}$/gm;
+    let emailRegex = new RegExp(emailPattern);
+    if(emailRegex.test(email)){
+        setIsEmailError(false)
+        error = false
+    }else{
+        setIsEmailError(true)
+        error=true
+    }
+
+    if(error===false){
+        const newData = {name,phoneNumber,email,institute,events}
+        setData(prevState => {
+            //console.log(prevState,"===> Prev State")
+            return [...prevState,newData]  
+        })
+    }
+
+    
   }
 
   return (
@@ -106,6 +142,13 @@ export const Validation=()=>{
             ))}
           </select>
         </div>
+
+        <div className="error-container">
+            <p>{isNameError && "Name is Not valid"}</p>
+            <p>{isPhoneNumberError && "Phone Number is not Valid"}</p>
+            <p>{isEmailError && "Email is not Valid"}</p>
+        </div>
+
         <div>
           <button type="submit">Submit Form</button>
         </div>
